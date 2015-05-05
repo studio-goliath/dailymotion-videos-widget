@@ -17,6 +17,16 @@
 class Widget_Dailymotion_Videos extends WP_Widget {
 
 
+    private $thumb_size = array(
+            'thumbnail_60_url'  => '60',
+            'thumbnail_120_url' => '120',
+            'thumbnail_180_url' => '180',
+            'thumbnail_240_url' => '240',
+            'thumbnail_360_url' => '360',
+            'thumbnail_480_url' => '480',
+            'thumbnail_720_url' => '720',
+        );
+
     /**
      * Register widget with WordPress.
      */
@@ -50,20 +60,21 @@ class Widget_Dailymotion_Videos extends WP_Widget {
                     'title'             => '',
                     'user_id'           => false,
                     'nb_limit_video'    => 2,
-                    'width'             => 300,
+                    'thumb_size'             => 'thumbnail_360_url',
                 ));
 
 
         if( !empty( $instance['user_id'] ) ){
 
             $videos = get_transient( 'dvw_' . $this->id );
+            $thumbnail_size = $instance['thumb_size'];
 
             // Ignore transient on preview mode
             if( ! $videos || ( method_exists('WP_Widget', 'is_preview' ) && $this->is_preview() ) ){
                 // Dailymotion api call
                 $user_id = esc_attr( $instance['user_id'] );
 
-                $dailymotion_api_url = "https://api.dailymotion.com/user/$user_id/videos?limit={$instance['nb_limit_video']}&fields=id,allow_embed,embed_url";
+                $dailymotion_api_url = "https://api.dailymotion.com/user/$user_id/videos?limit={$instance['nb_limit_video']}&fields=id,allow_embed,embed_url,title,{$thumbnail_size}";
 
                 $dailymotion_response = wp_remote_get( $dailymotion_api_url );
 
@@ -88,6 +99,8 @@ class Widget_Dailymotion_Videos extends WP_Widget {
 
                 if( ! empty( $videos->list) ){
 
+                    add_thickbox();
+
                     $title = apply_filters('widget_title', $instance['title']);
 
                     echo $args['before_widget'];
@@ -98,10 +111,20 @@ class Widget_Dailymotion_Videos extends WP_Widget {
 
                     foreach ($videos->list as $video) {
 
+                        echo '<ul class="dvw_videos_list">';
+
                         if( $video->allow_embed ){
 
-                            echo wp_oembed_get( $video->embed_url, array( 'width' => $instance['width'] ) );
+                            $thumbnail_src = $video->{$thumbnail_size};
+
+                            echo "<a href='{$video->embed_url}?TB_iframe=true' class='thickbox'>";
+                            echo "<img src='$thumbnail_src' height='{$this->thumb_size[$thumbnail_size]}'/>";
+                            echo "<h3>{$video->title}</h3>";
+                            echo '</a>';
+
                         }
+
+                        echo '</ul>';
 
                     }
 
@@ -132,7 +155,7 @@ class Widget_Dailymotion_Videos extends WP_Widget {
 
         $instance['user_id'] = sanitize_text_field($new_instance['user_id']);
 
-        $instance['width'] = intval($new_instance['width']);
+        $instance['thumb_size'] = sanitize_text_field($new_instance['thumb_size']);
 
         $instance['nb_limit_video'] = intval($new_instance['nb_limit_video']);
 
@@ -167,8 +190,17 @@ class Widget_Dailymotion_Videos extends WP_Widget {
         </p>
 
         <p>
-            <label for="<?php echo $this->get_field_id('width'); ?>"><?php _e('Max width', 'dailymotion-videos-widget') ?> :</label>
-            <input class="widefat" id="<?php echo $this->get_field_id('width'); ?>" name="<?php echo $this->get_field_name('width'); ?>" type="text" value="<?php if( isset($instance['width']) ){ echo $instance['width'];} ?>" />
+            <label for="<?php echo $this->get_field_id('thumb_size'); ?>"><?php _e('Thumbnail height', 'dailymotion-videos-widget') ?> :</label>
+            <select id="<?php echo $this->get_field_id('thumb_size'); ?>" name="<?php echo $this->get_field_name('thumb_size'); ?>">
+                <?php
+                foreach ($this->thumb_size as $size => $size_label ) {
+
+                    $selected = selected( $instance['thumb_size'], $size, false );
+
+                    echo "<option value='$size' $selected>$size_label</option>";
+                }
+                ?>
+            </select>
         </p>
 
         <?php
