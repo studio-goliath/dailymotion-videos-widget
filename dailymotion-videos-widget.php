@@ -180,7 +180,7 @@ class Widget_Dailymotion_Videos extends WP_Widget {
         </p>
 
         <p>
-            <label for="<?php echo $this->get_field_id('user_id'); ?>"><?php _e('Dailymotion id', 'dailymotion-videos-widget') ?> :</label>
+            <label for="<?php echo $this->get_field_id('user_id'); ?>"><?php _e('Dailymotion username', 'dailymotion-videos-widget') ?> :</label>
             <input class="widefat" id="<?php echo $this->get_field_id('user_id'); ?>" name="<?php echo $this->get_field_name('user_id'); ?>" type="text" value="<?php if( isset($instance['user_id']) ){ echo $instance['user_id'];} ?>" />
         </p>
 
@@ -208,3 +208,10 @@ class Widget_Dailymotion_Videos extends WP_Widget {
 
 }
 add_action('widgets_init', create_function('', 'register_widget( "Widget_Dailymotion_Videos" );'));
+
+
+function bvw_plugin_init() {
+
+    load_plugin_textdomain( 'dailymotion-videos-widget', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+}
+add_action('plugins_loaded', 'bvw_plugin_init');
