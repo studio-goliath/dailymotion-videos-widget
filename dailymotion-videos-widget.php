@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Dailymotion Videos Widget
  * Plugin URI: https://github.com/studio-goliath/dailymotion-videos-widget
- * Description: A Widget to show your latest dailymotion video
+ * Description: Add widget to show your latest dailymotion videos
  * Version: 0.1
  * Author: Studio Goliath
  * Author URI: http://www.studio-goliath.fr
