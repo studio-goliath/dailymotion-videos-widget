@@ -33,11 +33,11 @@ function bvw_dailymotion_video_fields( $fields ){
 add_filter( 'bvw_dailymotion_video_fields', 'bvw_dailymotion_video_fields' );
 `
 
-the **bvw_dailymotion_vedio_link** filter, that let you filter the ouput form each video
+the **bvw_dailymotion_video_link** filter, that let you filter the ouput form each video
 
 example :
 `
-function bvw_dailymotion_vedio_link( $output, $video, $widget_instance ){
+function bvw_dailymotion_video_link( $output, $video, $widget_instance ){
 
     $thumbnail_size = $widget_instance['thumb_size'];
     $thumbnail_src = $video->{$thumbnail_size};
@@ -50,7 +50,7 @@ function bvw_dailymotion_vedio_link( $output, $video, $widget_instance ){
 
     return $output;
 }
-add_filter( 'bvw_dailymotion_vedio_link', 'bvw_dailymotion_vedio_link', 10, 3 );
+add_filter( 'bvw_dailymotion_video_link', 'bvw_dailymotion_video_link', 10, 3 );
 
 
 
