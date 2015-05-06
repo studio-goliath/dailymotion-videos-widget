@@ -74,7 +74,18 @@ class Widget_Dailymotion_Videos extends WP_Widget {
                 // Dailymotion api call
                 $user_id = esc_attr( $instance['user_id'] );
 
-                $dailymotion_api_url = "https://api.dailymotion.com/user/$user_id/videos?limit={$instance['nb_limit_video']}&fields=id,allow_embed,embed_url,title,{$thumbnail_size}";
+                /**
+                 * Filter the video-fields recover from the dailymotion API
+                 * Possible fields can be found here : https://developer.dailymotion.com/documentation#video-fields
+                 *
+                 * @since 0.1
+                 *
+                 * @param array $dailymotion_video_fields
+                 */
+                $dailymotion_video_fields = apply_filters( 'bvw_dailymotion_video_fields', array( 'id','allow_embed','embed_url','title', $thumbnail_size ) );
+                $dailymotion_video_fields_string = implode(',', $dailymotion_video_fields);
+
+                $dailymotion_api_url = "https://api.dailymotion.com/user/$user_id/videos?limit={$instance['nb_limit_video']}&fields=$dailymotion_video_fields_string";
 
                 $dailymotion_response = wp_remote_get( $dailymotion_api_url );
 
@@ -111,20 +122,32 @@ class Widget_Dailymotion_Videos extends WP_Widget {
 
                     foreach ($videos->list as $video) {
 
-                        echo '<ul class="dvw_videos_list">';
-
                         if( $video->allow_embed ){
 
                             $thumbnail_src = $video->{$thumbnail_size};
 
-                            echo "<a href='{$video->embed_url}?TB_iframe=true' class='thickbox'>";
-                            echo "<img src='$thumbnail_src' height='{$this->thumb_size[$thumbnail_size]}'/>";
-                            echo "<h3>{$video->title}</h3>";
-                            echo '</a>';
+                            /**
+                             * Filter the output off each video
+                             *
+                             * @since 0.1
+                             *
+                             * @param string $output
+                             * @param object $video, the dailymotion video object
+                             * @param array $instance, instance of the widget
+                             */
+                            $dailymotion_vedio_link = apply_filters( 'bvw_dailymotion_vedio_link', '', $video, $instance );
+
+                            if( empty( $dailymotion_vedio_link ) ){
+
+                                $dailymotion_vedio_link = "<a href='{$video->embed_url}?TB_iframe=true' class='thickbox'>";
+                                $dailymotion_vedio_link .= "<img src='$thumbnail_src' height='{$this->thumb_size[$thumbnail_size]}'/>";
+                                $dailymotion_vedio_link .= "<h3>{$video->title}</h3>";
+                                $dailymotion_vedio_link .= '</a>';
+                            }
+
+                            echo $dailymotion_vedio_link;
 
                         }
-
-                        echo '</ul>';
 
                     }
 
@@ -195,7 +218,10 @@ class Widget_Dailymotion_Videos extends WP_Widget {
                 <?php
                 foreach ($this->thumb_size as $size => $size_label ) {
 
-                    $selected = selected( $instance['thumb_size'], $size, false );
+                    $selected = '';
+                    if( isset( $instance['thumb_size'] ) ){
+                        $selected = selected( $instance['thumb_size'], $size, false );
+                    }
 
                     echo "<option value='$size' $selected>$size_label</option>";
                 }
