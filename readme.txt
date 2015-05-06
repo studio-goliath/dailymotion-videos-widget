@@ -19,25 +19,25 @@ Add widget to show your latest dailymotion videos
 
 Yes there are somes filters that can help you get the output that you want :
 
-the **bvw_dailymotion_video_fields** filter, that let you filter the video fields to get from dailymotion
+the **dlvw_dailymotion_video_fields** filter, that let you filter the video fields to get from dailymotion
 Possible fields can be found here : https://developer.dailymotion.com/documentation#video-fields
 
 example :
 `
-function bvw_dailymotion_video_fields( $fields ){
+function dlvw_dailymotion_video_fields( $fields ){
 
     array_push($fields, 'duration_formatted');
 
     return $fields;
 }
-add_filter( 'bvw_dailymotion_video_fields', 'bvw_dailymotion_video_fields' );
+add_filter( 'dlvw_dailymotion_video_fields', 'dlvw_dailymotion_video_fields' );
 `
 
-the **bvw_dailymotion_video_link** filter, that let you filter the ouput form each video
+the **dlvw_dailymotion_video_link** filter, that let you filter the ouput form each video
 
 example :
 `
-function bvw_dailymotion_video_link( $output, $video, $widget_instance ){
+function dlvw_dailymotion_video_link( $output, $video, $widget_instance ){
 
     $thumbnail_size = $widget_instance['thumb_size'];
     $thumbnail_src = $video->{$thumbnail_size};
@@ -50,7 +50,7 @@ function bvw_dailymotion_video_link( $output, $video, $widget_instance ){
 
     return $output;
 }
-add_filter( 'bvw_dailymotion_video_link', 'bvw_dailymotion_video_link', 10, 3 );
+add_filter( 'dlvw_dailymotion_video_link', 'dlvw_dailymotion_video_link', 10, 3 );
 
 
 
