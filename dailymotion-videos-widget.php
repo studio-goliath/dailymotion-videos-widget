@@ -36,7 +36,8 @@ class Widget_Dailymotion_Videos extends WP_Widget {
                         'dvw_dailymotion_widget',
                         'Dailymotion Videos Widget', // Name
                         array(
-                            'description' => __('Show your latest dailymotion video', 'dailymotion-videos-widget')
+                            'description'   => __('Show your latest dailymotion video', 'dailymotion-videos-widget'),
+                            'classname'     => __('dvw_dailymotion_widget')
                         )
         );
 
@@ -139,7 +140,7 @@ class Widget_Dailymotion_Videos extends WP_Widget {
 
                             if( empty( $dailymotion_vedio_link ) ){
 
-                                $dailymotion_vedio_link = "<a href='{$video->embed_url}?TB_iframe=true' class='thickbox'>";
+                                $dailymotion_vedio_link = "<a href='{$video->embed_url}?TB_iframe=true' class='thickbox dvw_dailymotion_video'>";
                                 $dailymotion_vedio_link .= "<img src='$thumbnail_src' height='{$this->thumb_size[$thumbnail_size]}'/>";
                                 $dailymotion_vedio_link .= "<h3>{$video->title}</h3>";
                                 $dailymotion_vedio_link .= '</a>';
