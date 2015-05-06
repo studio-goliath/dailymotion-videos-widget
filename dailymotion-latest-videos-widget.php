@@ -34,7 +34,7 @@ class Widget_Dailymotion_Videos extends WP_Widget {
 
         parent::__construct(
                         'dlvw_dailymotion_widget',
-                        'Dailymotion Videos Widget', // Name
+                        'Dailymotion Latest Videos', // Name
                         array(
                             'description'   => __('Show your latest dailymotion video', 'dailymotion-latest-videos-widget'),
                             'classname'     => __('dlvw_dailymotion_widget')
