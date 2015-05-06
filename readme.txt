@@ -7,11 +7,12 @@ Stable tag: trunk
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Add widget to show your latest dailymotion videos
+Add widget to display your latest dailymotion videos
 
 == Description ==
 
-Add widget to show your latest dailymotion videos
+Add widget to display your latest dailymotion videos.
+Just set your Dailymotion's username and choose the number of videos you'd like to display.
 
 == Frequently Asked Questions ==
 
@@ -19,10 +20,10 @@ Add widget to show your latest dailymotion videos
 
 Yes there are somes filters that can help you get the output that you want :
 
-the **dlvw_dailymotion_video_fields** filter, that let you filter the video fields to get from dailymotion
+the **dlvw_dailymotion_video_fields** filter, that let you filter the video fields to get from dailymotion.
 Possible fields can be found here : https://developer.dailymotion.com/documentation#video-fields
 
-example :
+Example :
 `
 function dlvw_dailymotion_video_fields( $fields ){
 
@@ -35,7 +36,7 @@ add_filter( 'dlvw_dailymotion_video_fields', 'dlvw_dailymotion_video_fields' );
 
 the **dlvw_dailymotion_video_link** filter, that let you filter the ouput form each video
 
-example :
+Example :
 `
 function dlvw_dailymotion_video_link( $output, $video, $widget_instance ){
 
@@ -56,9 +57,9 @@ add_filter( 'dlvw_dailymotion_video_link', 'dlvw_dailymotion_video_link', 10, 3 
 
 == Screenshots ==
 
-1. Customize view of the widget
+1. Customizer view of the widget
 2. Admin view of the widget
-3. How the widget display with the theme TwentyFifteen
+3. How the widget displays with the theme TwentyFifteen
 
 == Changelog ==
 
